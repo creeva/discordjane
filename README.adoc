@@ -1,5 +1,9 @@
 == Discord Jane
 
-image::images/discordjane.png[]
+image::images/discordjane.png[align=center]
 
 A personal assistant to collect information from discord input to save on your system
+
+
+
+video::CHbN_gB30Tw[youtube]
