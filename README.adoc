@@ -4,6 +4,6 @@ image::images/discordjane.png[align=center]
 
 A personal assistant to collect information from discord input to save on your system
 
+Instruction video on setting up a bot on the Discord side:
 
-
-video::CHbN_gB30Tw[youtube]
+https://www.youtube.com/watch?v=CHbN_gB30Tw[Discord Setup Video]
