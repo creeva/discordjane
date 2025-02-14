@@ -1,9 +1,108 @@
-== Discord Jane
+:toc: macro
+:toc-title: TABLE OF CONTENTS
+:tockeves: 6
+
+= Discord Jane
 
 image::images/discordjane.png[align=center]
 
-A personal assistant to collect information from discord input to save on your system
+Discord Jane is a Discord Personal Assistant (DPA) for collecting information on the fly for personal journaling.
+
+toc::[]
+
+== Requirements
+
+* Python 3.8 or later
+* https://discordpy.readthedocs.io/en/stable/[Discord.py]
+
+NOTE: To install discord.py run `python3 -m pip install -U discord.py` in the command prompt.
+
+=== Configuration
 
 Instruction video on setting up a bot on the Discord side:
 
 https://www.youtube.com/watch?v=CHbN_gB30Tw[Discord Setup Video]
+
+== Slash Commands
+
+Slash commands allow a simple way to seperate unintentional and intenational command usage. 
+
+=== Media Consumption Commands
+
+.Media Consumption Commands
+[%header, width="100%", cols="1,3"]
+|=====
+|Command|Function
+|/read|Records read books to a local file
+|/reading|Records books currently being read to a local file
+|/wantbook|Records books to be read to a local file
+|/ownedbook|Records owned books to a local file
+|/watchedmovie|Records watched movies to a local file
+|/wantmovie|Records movies to watch in the future to a local file
+|/ownedmovie|Records owned movies to a local file
+|/ownedmusic|Records owned music to a local file
+|/wantmusic|Makes note of artists or songs to track to a local file
+|/wantshow|Records shows to watch to a local file
+|/watchedepisode|Records tv show episodes to a local file
+|/watchedshow|Records watched show to a local file
+|/ownedshow|Records owned shows to a local file
+|/playedgame|Records played games to a local file
+|/beatengame|Records beaten games to a local file
+|/wantgame|Records wanted games to a local file
+|/ownedgame|Records owned games to a local file
+|=====
+
+=== System Commands
+
+.System Commands
+[%header, width="100%", cols="1,3"]
+|=====
+|Command|Function
+|/janeinfo|quick help and overview
+|=====
+
+== Output Files
+
+.Output Files
+[%header, width="100%", cols="3"]
+|=====
+|File|Media Type|Function
+|daily/YYYY-MM-DD-readbook.txt|Books|Daily list of books read
+|daily/YYYY-MM-DD-readbingbook.txt|Books|Daily list of finished books
+|daily/YYYY-MM-DD-wantbook.txt|Books|Daily list of wanted books
+|daily/YYYY-MM-DD-ownedbook.txt|Books|Daily list of owned books
+|daily/YYYY-MM-DD-watchedmovie.txt|Movies|Daily list of finished movies
+|daily/YYYY-MM-DD-wantedmovie.txt|Movies|Daily list of wanted movies
+|daily/YYYY-MM-DD-ownedmovie.txt|Movies|Daily list of owned movies
+|daily/YYYY-MM-DD-wantmusic.txt|Music|Daily list of wanted music
+|daily/YYYY-MM-DD-wantshow.txt|Shows|Daily list of shows
+|daily/YYYY-MM-DD-watchedepisode.txt|/Shows|Daily list of tv show episodes
+|daily/YYYY-MM-DD-watchedshow.txt|Shows|Daily list of watched show
+|daily/YYYY-MM-DD-ownedshow.txt|Shows|Daily list of owned shows
+|daily/YYYY-MM-DD-playedgames.txt|Video Games|Daily list of played games
+|daily/YYYY-MM-DD-watchedmovies.txt|Video Games|Daily list of beaten games
+|daily/YYYY-MM-DD-wantgame.txt|Video Games|Daily list of wanted games
+|daily/YYYY-MM-DD-ownedgame.txt|Video Games|Daily list of owned games
+|data/readbook.txt|Books|List of books read
+|data/readbingbook.txt|Books|List of finished books
+|data/wantbook.txt|Books|List of wanted books
+|data/ownedbook.txt|Books|List of owned books
+|data/watchedmovie.txt|Movies|List of finished movies
+|data/wantedmovie.txt|Movies|List of wanted movies
+|data/ownedmovie.txt|Movies|List of owned movies
+|data/wantmusic.txt|Music|List of wanted music
+|data/wantshow.txt|Shows|List of shows
+|data/watchedepisode.txt|Shows|List of tv show episodes
+|data/watchedshow.txt|Shows|List of watched show
+|data/ownedshow.txt|Shows|List of owned shows
+|data/playedgames.txt|Video Games|List of played games
+|data/watchedmovies.txt|Video Games|DList of beaten games
+|data/wantgame.txt|Video Games|List of wanted games
+|data/ownedgame.txt|Video Games|List of owned games
+|/logs/discordjanelogs.txt|System|System log
+|=====
+
+=== Output File Format
+
+
+=== What Can I Do With The Output Files
