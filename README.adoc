@@ -12,6 +12,8 @@ toc::[]
 
 == Requirements
 
+image::images/requirements.png[align=center]
+
 * Python 3.8 or later
 * https://discordpy.readthedocs.io/en/stable/[Discord.py]
 
@@ -24,6 +26,8 @@ Instruction video on setting up a bot on the Discord side:
 https://www.youtube.com/watch?v=CHbN_gB30Tw[Discord Setup Video]
 
 == Slash Commands
+
+image::images/slashcommands.png[align=center]
 
 Slash commands allow a simple way to seperate unintentional and intenational command usage. 
 
