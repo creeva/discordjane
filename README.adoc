@@ -21,6 +21,8 @@ NOTE: To install discord.py run `python3 -m pip install -U discord.py` in the co
 
 === Configuration
 
+image::images/configuration.png[align=center]
+
 Instruction video on setting up a bot on the Discord side:
 
 https://www.youtube.com/watch?v=CHbN_gB30Tw[Discord Setup Video]
@@ -66,6 +68,8 @@ Slash commands allow a simple way to seperate unintentional and intenational com
 |=====
 
 == Output Files
+
+image::images/outputfiles.png[align=center]
 
 .Output Files
 [%header, width="100%", cols="3"]
