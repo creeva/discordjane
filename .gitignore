@@ -1,3 +1,6 @@
 run/*
+code/daily/*
+code/data/*
+code/logs/*
 code/.env
 .DS_Store
