@@ -8,7 +8,15 @@ image::images/discordjane.png[align=center]
 
 Discord Jane is a Discord Personal Assistant (DPA) for collecting information on the fly for personal journaling.
 
+
+
 toc::[]
+
+== About
+
+image::images/about.png[align=center]
+
+Jane is designed to 
 
 == Requirements
 
@@ -56,6 +64,15 @@ Slash commands allow a simple way to seperate unintentional and intenational com
 |/beatengame|Records beaten games to a local file
 |/wantgame|Records wanted games to a local file
 |/ownedgame|Records owned games to a local file
+|=====
+
+=== Social Media Commands
+
+.Social Media Commands
+[%header, width="100%", cols="1,3"]
+|=====
+|Command|Function
+|/toot|Posts to configured Mastodon account
 |=====
 
 === System Commands
@@ -114,3 +131,5 @@ image::images/outputfiles.png[align=center]
 
 
 === What Can I Do With The Output Files
+
+== Future

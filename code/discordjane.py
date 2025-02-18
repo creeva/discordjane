@@ -24,12 +24,11 @@ import datetime
 import discord
 import glob
 import os
-from discord import app_commands
+from atproto import Client
 from discord.ext import commands, tasks
-from itertools import cycle
-from os import name
-from mastodon import Mastodon
 from dotenv import load_dotenv
+from itertools import cycle
+from mastodon import Mastodon
 #
 ###############################################################################
 # Variables                                                                   #
@@ -51,6 +50,12 @@ bot_status = cycle(['Awaiting Input', 'Collecting Information'])
 logfile = 'logs/discordjanelog.txt'
 globalbuffer1 = ''
 globalbuffer2 = ''
+systemloginfo = '   --   SYSTEM   --   INFO   --   '
+systemlogerror = '   --   SYSTEM   --   ERROR   --   '
+logtime = '%Y-%m-%d   --   %H:%M:%S'
+daytime = '%Y-%m-%d'
+checkdocument = f'data/{globalbuffer1}'
+inputdata = f'{globalbuffer2}'
 #
 ###############################################################################
 # Classes                                                                     #
@@ -62,27 +67,27 @@ class Client(commands.Bot):
 # Initialization
     async def on_ready(self): 
         change_status.start()
-        timestamp = datetime.datetime.now().strftime("%Y-%m-%d -- %H:%M:%S")
-        print(f'{timestamp} -- SYSTEM -- Bot Online as {self.user}')
-        with open(logfile, mode='a', encoding='utf8') as log: log.write(f'\n{timestamp} -- SYSTEM -- Bot Online as {self.user}')
+        timestamp = datetime.datetime.now().strftime(logtime)
+        print(f'{timestamp}{systemloginfo}Bot Online as {self.user}')
+        with open(logfile, mode='a', encoding='utf8') as log: log.write(f'\n{timestamp}{systemloginfo}Bot Online as {self.user}')
 # Force slash commands to sync
         try:
             guild = GUILD_ID
             synced = await self.tree.sync(guild=guild)
-            timestamp = datetime.datetime.now().strftime("%Y-%m-%d -- %H:%M:%S")
-            print(f'{timestamp} -- SYSTEM -- Synced {len(synced)} commands to guild {guild.id}')
-            with open(logfile, mode='a', encoding='utf8') as log: log.write(f'\n{timestamp} -- SYSTEM -- Synced {len(synced)} commands to guild {guild.id}')
+            timestamp = datetime.datetime.now().strftime(logtime)
+            print(f'{timestamp}{systemloginfo}Synced {len(synced)} commands to guild {guild.id}')
+            with open(logfile, mode='a', encoding='utf8') as log: log.write(f'\n{timestamp}{systemloginfo}Synced {len(synced)} commands to guild {guild.id}')
         except Exception as e: 
-            timestamp = datetime.datetime.now().strftime("%Y-%m-%d -- %H:%M:%S")
-            print(f'{timestamp} -- ERROR -- Error syncing commands: {e}')
-            with open(logfile, mode='a', encoding='utf8') as log: log.write(f'\n{timestamp} -- ERROR -- Error syncing commands: {e}')
+            timestamp = datetime.datetime.now().strftime(logtime)
+            print(f'{timestamp}{systemlogerror}Error syncing commands: {e}')
+            with open(logfile, mode='a', encoding='utf8') as log: log.write(f'\n{timestamp}{systemlogerror}Error syncing commands: {e}')
 # Messages
     async def on_message(self, message):
         if message.author == self.user: return
         if message.content.startswith('status'): await message.channel.send(f'Jane is listening to {message.author}')
-        timestamp = datetime.datetime.now().strftime("%Y-%m-%d -- %H:%M:%S")
-        print(f'{timestamp} -- MESSAGE -- {message.author}: {message.content}')
-        with open(logfile, mode='a', encoding='utf8') as log: log.write(f'\n{timestamp} -- MESSAGE -- {message.author}: {message.content}')
+        timestamp = datetime.datetime.now().strftime(logtime)
+        print(f'{timestamp}   --   DISCORD   --   MESSAGE   --   {message.author}: {message.content}')
+        with open(logfile, mode='a', encoding='utf8') as log: log.write(f'\n{timestamp}   --   DISCORD   --   MESSAGE   --   {message.author}: {message.content}')
 #
 ###############################################################################
 # Functions                                                                   #
@@ -92,15 +97,13 @@ class Client(commands.Bot):
 #
 async def consumed():
     global globalbuffer1, globalbuffer2
-    checkdocument = f'data/{globalbuffer1}'
-    inputdata = f'{globalbuffer2}'
-    timestamp = datetime.datetime.now().strftime('%Y-%m-%d -- %H:%M:%S')
-    date = datetime.datetime.now().strftime('%Y-%m-%d')
+    timestamp = datetime.datetime.now().strftime(logtime)
+    date = datetime.datetime.now().strftime(daytime)
     dailyfile = f'daily/{date}-{globalbuffer1}'
     with open(logfile, mode='a', encoding='utf8') as log: 
-        print(f'{timestamp} -- DATAENTRY -- {inputdata} added to {checkdocument}')
-        log.write(f'\n{timestamp} -- DATAENTRY -- {inputdata} added to {checkdocument}')
-        log.write(f'\n{timestamp} -- DATAENTRY -- {inputdata} added to {dailyfile}')
+        print(f'{timestamp}{systemloginfo}{inputdata} added to {checkdocument}')
+        log.write(f'\n{timestamp}{systemloginfo}{inputdata} added to {checkdocument}')
+        log.write(f'\n{timestamp}{systemloginfo}{inputdata} added to {dailyfile}')
     with open(dailyfile, mode='a+', encoding='utf8') as infile: 
         infile.write(f'\n{inputdata}\n')
         lines = infile.readlines()
@@ -118,19 +121,15 @@ async def consumed():
 #
 async def socialpost():
     global globalbuffer1, globalbuffer2
-    checkdocument = f'data/{globalbuffer1}'
-    inputdata = f'{globalbuffer2}'
-    timestamp = datetime.datetime.now().strftime('%Y-%m-%d -- %H:%M:%S')
-    date = datetime.datetime.now().strftime('%Y-%m-%d')
+    timestamp = datetime.datetime.now().strftime(logtime)
+    date = datetime.datetime.now().strftime(daytime)
     dailyfile = f'daily/{date}-{globalbuffer1}'
     with open(logfile, mode='a', encoding='utf8') as log: 
-        print(f'{timestamp} -- SOCIALPOST -- {inputdata} added to {checkdocument}')
-        log.write(f'\n{timestamp} -- SOCIALPOST -- {inputdata} added to {checkdocument}')
-        log.write(f'\n{timestamp} -- SOCIALPOST -- {inputdata} added to {dailyfile}')
-    with open(dailyfile, mode='a+', encoding='utf8') as infile: 
-        infile.write(f'\n{timestamp} -- {inputdata}\n')
-    with open(checkdocument, mode='a+', encoding='utf8') as infile: 
-        infile.write(f'\n{timestamp} -- {inputdata}\n')
+        print(f'{timestamp}{systemloginfo}{inputdata} added to {checkdocument}')
+        log.write(f'\n{timestamp}{systemloginfo}{inputdata} added to {checkdocument}')
+        log.write(f'\n{timestamp}{systemloginfo}{inputdata} added to {dailyfile}')
+    with open(dailyfile, mode='a+', encoding='utf8') as infile: infile.write(f'\n{timestamp}{systemloginfo}{inputdata}\n')
+    with open(checkdocument, mode='a+', encoding='utf8') as infile: infile.write(f'\n{timestamp}{systemloginfo}{inputdata}\n')
 #
 ###############################################################################
 # Main Script Start                                                           #
@@ -166,8 +165,8 @@ async def change_status(): await client.change_presence(activity=discord.Game(ne
 # Embed
 @client.tree.command(name='janeinfo', description='Jane Information', guild=GUILD_ID)
 async def janeinfo(interaction: discord.Interaction):
-    timestamp = datetime.datetime.now().strftime('%Y-%m-%d -- %H:%M:%S')
-    with open(logfile, mode='a', encoding='utf8') as log: log.write(f'\n{timestamp} -- SYSTEM -- Discord Jane Information Displaued')
+    timestamp = datetime.datetime.now().strftime(logtime)
+    with open(logfile, mode='a', encoding='utf8') as log: log.write(f'\n{timestamp}{systemloginfo}Discord Jane Information Displayed')
     embed = discord.Embed(title='Discord Jane Information', url='https://github.com/creeva/discordjane', description='This is an overview of Discord Jane', color=discord.Color.red())
     embed.set_thumbnail(url='https://github.com/creeva/discordjane/raw/main/images/discordjane.png')
     embed.add_field(name='Field 1 Title', value = 'Creeva Wrote This\n next line', inline=False)
@@ -183,15 +182,15 @@ async def janeinfo(interaction: discord.Interaction):
 async def readbook(interaction: discord.Interaction, title: str, author: str):
     global globalbuffer1, globalbuffer2
     globalbuffer1 = 'readbook.txt'
-    globalbuffer2 = f'{title} -- {author}'
+    globalbuffer2 = f'(::TITLE::){title} (::AUTHOR::){author}'
     await consumed()
     await interaction.response.send_message(f'{title} by {author} was added to the read book list')
-# # Reading Books
+# Reading Books
 @client.tree.command(name='reading', description='Records books currently being read to a local file', guild=GUILD_ID)
 async def reading(interaction: discord.Interaction, title: str, author: str):
     global globalbuffer1, globalbuffer2
     globalbuffer1 = 'readingbook.txt'
-    globalbuffer2 = f'{title} -- {author}'
+    globalbuffer2 = f'(::TITLE::){title} (::AUTHOR::){author}'
     await consumed()
     await interaction.response.send_message(f'{title} by {author} was added to the reading list')
 # Want To Read Books
@@ -199,7 +198,7 @@ async def reading(interaction: discord.Interaction, title: str, author: str):
 async def wantboo(interaction: discord.Interaction, title: str, author: str):
     global globalbuffer1, globalbuffer2
     globalbuffer1 = 'wantbook.txt'
-    globalbuffer2 = f'{title} -- {author}'
+    globalbuffer2 = f'(::TITLE::){title} (::AUTHOR::){author}'
     await consumed()
     await interaction.response.send_message(f'{title} by {author} was added to the want to read list')
 # Owned Books
@@ -207,7 +206,7 @@ async def wantboo(interaction: discord.Interaction, title: str, author: str):
 async def ownedbook(interaction: discord.Interaction, title: str, author: str):
     global globalbuffer1, globalbuffer2
     globalbuffer1 = 'ownedbook.txt'
-    globalbuffer2 = f'{title} -- {author}'
+    globalbuffer2 = f'(::TITLE::){title} (::AUTHOR::){author}'
     await consumed()
     await interaction.response.send_message(f'{title} by {author} was added to the owned book list')
 #
@@ -272,7 +271,7 @@ async def wantshow(interaction: discord.Interaction, show: str):
 async def watchedepisode(interaction: discord.Interaction, show: str, episode: str):
     global globalbuffer1, globalbuffer2
     globalbuffer1 = 'watchedepisode.txt'
-    globalbuffer2 = f'{show} -- {episode}'
+    globalbuffer2 = f'(::SHOW::){show} (::EPISODE::){episode}'
     await consumed()
     await interaction.response.send_message(f'{show} episode {episode} was added to the watched episode list.')
 # Finished
@@ -288,7 +287,7 @@ async def watchedshow(interaction: discord.Interaction, show: str):
 async def ownedshow(interaction: discord.Interaction, show: str, season: str):
     global globalbuffer1, globalbuffer2
     globalbuffer1 = 'ownedshow.txt'
-    globalbuffer2 = f'{show} - {season}'
+    globalbuffer2 = f'(::SHOW::){show} (::EPISODE::){season}'
     await consumed()
     await interaction.response.send_message(f'{show} season {season} was added to the watched movie list.')
 #
@@ -299,7 +298,7 @@ async def ownedshow(interaction: discord.Interaction, show: str, season: str):
 async def playedgame(interaction: discord.Interaction, game: str, platform: str):
     global globalbuffer1, globalbuffer2
     globalbuffer1 = 'playedgames.txt'
-    globalbuffer2 = f'{game} -- {platform}'
+    globalbuffer2 = f'(::GAME::){game} (::PLATFORM::){platform}'
     await consumed()
     await interaction.response.send_message(f'{game} for {platform} was added to the played games list.')
 # Beaten
@@ -307,7 +306,7 @@ async def playedgame(interaction: discord.Interaction, game: str, platform: str)
 async def beatengame(interaction: discord.Interaction, game: str, platform: str):
     global globalbuffer1, globalbuffer2
     globalbuffer1 = 'watchedmovies.txt'
-    globalbuffer2 = f'{game} -- {platform}'
+    globalbuffer2 = f'(::GAME::){game} (::PLATFORM::){platform}'
     await consumed()
     await interaction.response.send_message(f'{game} for {platform}was added to the beaten game list.')
 # Want To Play
@@ -315,7 +314,7 @@ async def beatengame(interaction: discord.Interaction, game: str, platform: str)
 async def wantgame(interaction: discord.Interaction, game: str, platform: str):
     global globalbuffer1, globalbuffer2
     globalbuffer1 = 'wantgame.txt'
-    globalbuffer2 = f'{game} -- {platform}'
+    globalbuffer2 = f'(::GAME::){game} (::PLATFORM::){platform}'
     await consumed()
     await interaction.response.send_message(f'{game} for {platform} was added to the want to play list.')
 # Owned
@@ -323,17 +322,27 @@ async def wantgame(interaction: discord.Interaction, game: str, platform: str):
 async def ownedgame(interaction: discord.Interaction, game: str, platform: str):
     global globalbuffer1, globalbuffer2
     globalbuffer1 = 'ownedgame.txt'
-    globalbuffer2 = f'{game} -- {platform}'
+    globalbuffer2 = f'(::GAME::){game} (::PLATFORM::){platform}'
     await consumed()
     await interaction.response.send_message(f'{game} for {platform} was added to the owned game list.')
 #
-# Mastodon
+# Social
 #
+# Bluesky
+# @client.tree.command(name='bluesky', description='Posts to Bluesky Configured Account', guild=GUILD_ID)
+# async def toot(interaction: discord.Interaction, toot: str):
+#     global globalbuffer1, globalbuffer2
+#     globalbuffer1 = 'bluesky.txt'
+#     globalbuffer2 = f'BLUESKY   --   "{toot}"'
+#     mastodon.toot(f'{toot}')
+#     await socialpost()
+#     await interaction.response.send_message(f'"{toot}" posted to Bluesky')
+# Mastadon
 @client.tree.command(name='toot', description='Posts to Mastodon Configured Account', guild=GUILD_ID)
 async def toot(interaction: discord.Interaction, toot: str):
     global globalbuffer1, globalbuffer2
     globalbuffer1 = 'mastodon.txt'
-    globalbuffer2 = f'Mastodon -- "{toot}"'
+    globalbuffer2 = f'MASTODON:"{toot}"'
     mastodon.toot(f'{toot}')
     await socialpost()
     await interaction.response.send_message(f'"{toot}" posted to Mastodon')
@@ -343,3 +352,4 @@ async def toot(interaction: discord.Interaction, toot: str):
 ###############################################################################
 #
 client.run(f'{SERVER_ID}')
+
